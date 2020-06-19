@@ -1,0 +1,76 @@
+<div id='output'></div>
+<script>
+// ================== getZodiac function begins ===============================
+function getZodiac(month, day){
+	var datecode = month*100 + day; //this will give us a number represent month and day
+	if (datecode <= 120){        // Jan 20
+		return "Capricorn";
+	}else if (datecode <= 219) { // Feb 19
+		return "Aquarius";
+	}else if (datecode <= 320) { // Mar 20
+		return "Pisces";
+	}else if (datecode <= 420) { // Apr 20
+		return "Aries";
+	}else if (datecode <= 520) { // May 20
+		return "Taurus";
+	}else if (datecode <= 621) { // Jun 21
+		return "Gemini";
+	}else if (datecode <= 722) { // Jul 22
+		return "Cancer";
+	}else if (datecode <= 822) { // Aug 22 -- Wikipedia says that it's Aug 23 but then
+	                             //           but then it starts again with Aug 23 so I
+	                             // don't know what's up with that.
+		return "Leo";
+	}else if (datecode <= 921) { // Sept 21
+		return "Virgo";
+	}else if (datecode <= 1022) { // Oct 22
+		return "Libra";
+	}else if (datecode <= 1121) { // Nov 21
+		return "Scorpio";
+	}else if (datecode <= 1221) { // Dec 21
+		return "Sagittarius";
+	}else{ //if we hit this case it means we hava greater date code than Dec 21
+		return "Capricorn";
+	}
+}
+// ================== getZodiac function ends =================================
+// ================== getZodiac2 function begins ===============================
+//  This is version 2 of getZodiac().
+//  I like this version better because it uses arrays to logically get the zodiac sign.
+//  There's only one if else statement and not so many if else like 1st version and
+//  code is much shorter.
+function getZodiac2(month, day){
+	//bound is zero indexed and returns the day of month where the boundary occurs
+	//ie. bound[0] = 20; means January 20th is the boundary for a zodiac sign
+	var bound = [20,19,20,20,20,21,22,22,21,22,21,21];
+	//startMonth is zero indexed and returns the zodiac sign of the start of that month
+	//ie. startMonth[0] = "Capricorn"; means start of January is Zodiac Sign "Capricorn"
+	var startMonth = ["Capricorn","Aquarius","Pisces","Aries","Taurus","Gemini",
+	                  "Cancer","Leo","Virgo","Libra","Scorpio","Sagittarius"];
+	monthIndex = month-1; //so we can use zero indexed arrays
+	if (day <= bound[monthIndex]){ //it's start of month -- before or equal to bound date
+		signMonthIndex = monthIndex;
+	}else{ //it must be later than bound, we use the next month's startMonth
+		signMonthIndex = (monthIndex+1) % 12; //mod 12 to loop around to January index.
+	}
+	return startMonth[signMonthIndex]; //return the Zodiac sign of start Of that month.
+}
+// ================== getZodiac2 function ends =================================
+
+
+
+// =============================================================================
+// Test code below to verify that getZodiac2 still functions as getZodiac ======
+output = "";
+
+for (var i=0;i<366;i++){
+	date = new Date();
+	date.setDate((new Date()).getDate()+i);
+	year = date.getFullYear(); 
+	month = date.getMonth()+1;
+	day = date.getDate();
+	dateDisplay = year + "/"+month+"/"+day;
+	output += dateDisplay + " => "+ getZodiac(month,day) + "="+ getZodiac2(month,day)+"=>"+ (getZodiac(month,day) == getZodiac2(month,day)) +"<br/>";
+}
+document.getElementById("output").innerHTML = output;        
+</script>
